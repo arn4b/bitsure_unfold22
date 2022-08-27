@@ -1,23 +1,22 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react'
-import Web3Modal, { disconnect } from 'web3modal'
+import Web3Modal from 'web3modal'
 import { ethers } from 'ethers'
+import { Input, Button } from '@chakra-ui/react'
+
+import { useDispatch } from 'react-redux'
+import { setAddress, clearAddress } from '../slice'
 
 import { useNavigate } from 'react-router-dom'
-
-import { toHex, truncateAddress } from '../utils'
-
-const providerOptions = {
-    /* See Provider Options Section */
-}
+import '../App.css'
 
 const web3Modal = new Web3Modal({
     network: 'testnet', // optional
     cacheProvider: true, // optional
-    providerOptions, // required
+    providerOptions: {}, // required
 })
 
-export default function ConnecteToWallet() {
+export default function ConnectToWallet() {
     const [provider, setProvider] = useState()
     const [library, setLibrary] = useState()
     const [account, setAccount] = useState()
@@ -25,11 +24,11 @@ export default function ConnecteToWallet() {
     const [error, setError] = useState('')
     const [chainId, setChainId] = useState()
     const [network, setNetwork] = useState()
-    const [message, setMessage] = useState('')
-    const [signedMessage, setSignedMessage] = useState('')
-    const [verified, setVerified] = useState()
 
-    const connectWallet = async () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const connectToWallet = useCallback(async () => {
         try {
             const provider = await web3Modal.connect()
             const library = new ethers.providers.Web3Provider(provider)
@@ -38,68 +37,30 @@ export default function ConnecteToWallet() {
             setProvider(provider)
             setLibrary(library)
             if (accounts) setAccount(accounts[0])
+            dispatch(setAddress(accounts[0]))
             setChainId(network.chainId)
         } catch (error) {
             setError(error)
         }
-    }
-
-    // const handleNetwork = (e) => {
-    //     const id = e.target.value
-    //     setNetwork(Number(id))
-    // }
-
-    // const handleInput = (e) => {
-    //     const msg = e.target.value
-    //     setMessage(msg)
-    // }
-
-    // const signMessage = async () => {
-    //     if (!library) return
-    //     try {
-    //         const signature = await library.provider.request({
-    //             method: 'personal_sign',
-    //             params: [message, account],
-    //         })
-    //         setSignedMessage(message)
-    //         setSignature(signature)
-    //     } catch (error) {
-    //         setError(error)
-    //     }
-    // }
-
-    // const verifyMessage = async () => {
-    //     if (!library) return
-    //     try {
-    //         const verify = await library.provider.request({
-    //             method: 'personal_ecRecover',
-    //             params: [signedMessage, signature],
-    //         })
-    //         setVerified(verify === account.toLowerCase())
-    //     } catch (error) {
-    //         setError(error)
-    //     }
-    // }
+    }, [dispatch])
 
     const refreshState = () => {
         setAccount()
         setChainId()
         setNetwork('')
-        setMessage('')
-        setSignature('')
-        setVerified(undefined)
     }
 
-    const disconnect = async () => {
+    const disconnect = useCallback(async () => {
         await web3Modal.clearCachedProvider()
         refreshState()
-    }
+        dispatch(clearAddress())
+    }, [dispatch])
 
     useEffect(() => {
         if (web3Modal.cachedProvider) {
-            connectWallet()
+            connectToWallet()
         }
-    }, [])
+    }, [connectToWallet])
 
     useEffect(() => {
         if (provider?.on) {
@@ -132,15 +93,17 @@ export default function ConnecteToWallet() {
                 }
             }
         }
-    }, [provider])
-
-    let navigate = useNavigate()
+    }, [provider, disconnect, error])
 
     return (
-        <div className="App">
-            <button onClick={connectWallet}>Connect Wallet</button>
-            <button onClick={disconnect}>Disconnect Wallet</button>
-            <div>Connection Status: {!!account}</div>
+        <div>
+            <div className="buttonContainer">
+                {
+                    account
+                    ? <Button onClick={disconnect}>Disconnect Wallet</Button>
+                    : <Button onClick={connectToWallet}>Connect Wallet</Button>
+                }
+            </div>
             <div>Wallet Address: {account}</div>
 
             {account ? navigate('/profile') : <>oh no take insurance</>}

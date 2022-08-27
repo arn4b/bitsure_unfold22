@@ -41,4 +41,4 @@ async function getClaim(link) {
     signer.sendTransaction(transaction).then(() => {})
 }
 
-export default createInsurance
+export default getClaim;

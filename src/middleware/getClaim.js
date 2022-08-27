@@ -15,7 +15,7 @@ async function getClaim(link) {
         'function claim(string calldata link)',
     ])
 
-    const data = erc20Interface.encodeFunctionData('insurence', [
+    const data = erc20Interface.encodeFunctionData('claim', [
         link
     ])
 

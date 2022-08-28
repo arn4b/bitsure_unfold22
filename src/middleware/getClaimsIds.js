@@ -4,7 +4,7 @@ import abi from './abi.json'
 
 async function getClaimsIds(){
 
-let contractAddress;
+let contractAddress = '0x46a0A3202018B0ff0B3F964fAa35Eb66EefA8546';
 const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 await provider.send("eth_requestAccounts", []);
 const signer = provider.getSigner();
@@ -18,7 +18,7 @@ console.log("Account:", await signer.getAddress());
 //     'insurence', [name,age,Homeaddress,link,uri]
 //   )
 
-const contract = new ethers.Contract(address, abi, provider);
+const contract = new ethers.Contract(contractAddress, abi, provider);
 
 const data = await contract.getClaimArray();
 

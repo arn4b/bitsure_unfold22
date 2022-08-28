@@ -2,13 +2,14 @@ import React, { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 import Web3Modal from 'web3modal'
 import { ethers } from 'ethers'
-import { Input, Button } from '@chakra-ui/react'
+import { Input, Button, Heading, Text } from '@chakra-ui/react'
 
 import { useDispatch } from 'react-redux'
 import { setAddress, clearAddress } from '../slice'
 
 import { useNavigate } from 'react-router-dom'
 import '../App.css'
+import { truncateAddress } from '../utils'
 
 const web3Modal = new Web3Modal({
     network: 'testnet', // optional
@@ -36,8 +37,10 @@ export default function ConnectToWallet() {
             const network = await library.getNetwork()
             setProvider(provider)
             setLibrary(library)
-            if (accounts) setAccount(accounts[0])
-            dispatch(setAddress(accounts[0]))
+            if (accounts) {
+                setAccount(accounts[0])
+                dispatch(setAddress(accounts[0]))
+            }
             setChainId(network.chainId)
         } catch (error) {
             setError(error)
@@ -93,20 +96,32 @@ export default function ConnectToWallet() {
                 }
             }
         }
-    }, [provider, disconnect, error])
+
+        if (account) dispatch(dispatch(setAddress(account)))
+    }, [provider, disconnect, error, account, dispatch])
 
     return (
         <div>
+            <Heading className="bitsure">BitSure</Heading>
+            <Heading as="h3" size="sm" className="token">
+                [0xEF44256a0da1a65049d0a965a3B347ebD05eE877] Use this wallet
+                address to import your NFTs. You can always see the token IDs as
+                the last 2 digits of your (license ID - 1).
+            </Heading>
+            <Text className="alchemy">
+                Use this Alchemy RPC Endpoint for enhanced experience ❤️:
+                <a href='https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5'target='__blank' color='cyan'>https://polygon-mumbai.g.alchemy.com/v2/yl9TVrISmKuXSbjAf_l1tWsI6tajagX5</a>
+            </Text>
             <div className="buttonContainer">
-                {
-                    account
-                    ? <Button onClick={disconnect}>Disconnect Wallet</Button>
-                    : <Button onClick={connectToWallet}>Connect Wallet</Button>
-                }
+                {account ? (
+                    <Button onClick={disconnect}>Disconnect Wallet</Button>
+                ) : (
+                    <Button onClick={connectToWallet}>Connect Wallet</Button>
+                )}
+                <Button>Wallet Address: {truncateAddress(account)}</Button>
             </div>
-            <div>Wallet Address: {account}</div>
 
-            {account ? navigate('/profile') : <>oh no take insurance</>}
+            {/* {account ? navigate('/profile') : <>oh no take insurance</>} */}
         </div>
     )
 }

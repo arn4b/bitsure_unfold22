@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-
+import store from '../store'
 
 async function voting(id) {
 
@@ -8,8 +8,6 @@ async function voting(id) {
     await provider.send('eth_requestAccounts', [])
     const signer = provider.getSigner()
     console.log('Account:', await signer.getAddress())
-
-    const userWalletAddress = '0x09f15B6ab2D7FAcBb3b4De98624A1D9433aDB547';
 
     const erc20Interface = new ethers.utils.Interface([
         'function Approve(uint id)',

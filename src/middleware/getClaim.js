@@ -1,15 +1,14 @@
 import { ethers } from 'ethers'
-
+import store from '../store'
 
 async function getClaim(link) {
 
-    const contractAddress = '0x32915972d55f79c1e7e82afC62E22e1baAc66342'
+    const contractAddress = '0x46a0A3202018B0ff0B3F964fAa35Eb66EefA8546'
+
     const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')
     await provider.send('eth_requestAccounts', [])
     const signer = provider.getSigner()
     console.log('Account:', await signer.getAddress())
-
-    const userWalletAddress = '0x09f15B6ab2D7FAcBb3b4De98624A1D9433aDB547';
 
     const erc20Interface = new ethers.utils.Interface([
         'function claim(string calldata link)',

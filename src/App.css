@@ -1,10 +1,9 @@
 .App {
   text-align: center;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
   height: calc(100vh - 2rem);
+  padding: 5rem 0;
 }
 
 .App-logo {
@@ -64,8 +63,36 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  width: 500px;
   padding: 1rem;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.profileForm > input {
+  margin: 1rem 0;
+}
+
+.profileDetails {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.bitsure {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  padding: 1rem;
+}
+
+.alchemy {
+  position: absolute;
+  bottom: 0;
+  padding: 1rem;
+}
+
+.token {
+  padding: 4rem 0;
 }

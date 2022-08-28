@@ -21,7 +21,7 @@ async function daoReg() {
         to: contractAddress,
         data: data,
         gasLimit: '0x7A120',
-        value: '0x6F05B59D3B20000',
+        value: '0x2C68AF0BB140000',
         // gasPrice: '0x12C',
         from: store.getState().walletAddress
     }

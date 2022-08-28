@@ -55,15 +55,19 @@ function App() {
                             </span>
                         </Link>
                     </Tooltip>
-                    <Tooltip label="Buy/Sell">
-                        <span>
-                            <BsBagCheck />
-                        </span>
+                    <Tooltip label="Register for DAO">
+                        <Link to={'/daoreg'}>
+                            <span>
+                                <BsBagCheck />
+                            </span>
+                        </Link>
                     </Tooltip>
-                    <Tooltip label="NFT">
-                        <span>
-                            <BsXDiamond />
-                        </span>
+                    <Tooltip label="Renew NFT">
+                        <Link to={'/renew'}>
+                            <span>
+                                <BsXDiamond />
+                            </span>
+                        </Link>
                     </Tooltip>
                 </div>
                 <ConnectToWallet />
@@ -89,7 +93,11 @@ function App() {
                 </Routes>
 
                 <Routes>
-                    <Route path="approveclaims" exact element={<ApproveClaim />} />
+                    <Route
+                        path="approveclaims"
+                        exact
+                        element={<ApproveClaim />}
+                    />
                 </Routes>
             </div>
         </Container>

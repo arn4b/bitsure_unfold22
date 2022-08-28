@@ -56,6 +56,8 @@ export default function Profile() {
             setError(error)
         }
 
+        console.log(error);
+
         getDataFromAddress();
     }
 

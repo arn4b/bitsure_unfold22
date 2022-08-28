@@ -4,7 +4,7 @@ import abi from './abi.json'
 
 async function seeLink(id){
 
-let contractAddress = '0x46a0A3202018B0ff0B3F964fAa35Eb66EefA8546';
+let contractAddress = '0x1BCdDBd2d14f2bCf77B6f415b97e468dbbca85F7';
 const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
 await provider.send("eth_requestAccounts", []);
 const signer = provider.getSigner();

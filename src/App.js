@@ -44,9 +44,11 @@ function App() {
                         </Link>
                     </Tooltip>
                     <Tooltip label="Wallet">
-                        <span>
-                            <BsWallet />
-                        </span>
+                        <Link to={'/approveclaims'}>
+                            <span>
+                                <BsWallet />
+                            </span>
+                        </Link>
                     </Tooltip>
                     <Tooltip label="Insurance">
                         <Link to={'/claim'}>
